@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+ 
+const program = require('commander');
+ 
+program
+    .version('0.1.0')
+    .command('list');
+
+program
+    .version('0.1.0')
+    .command('start <difficulty> <mood> [tokens...]')
+    .description('run the given remote command')
+    .action((difficulty, mood, tokens) => {
+        const description = tokens.join(' ');
+        console.log(difficulty);
+        console.log(mood);
+        console.log(description);
+    })
+
+program
+    .version('0.1.0')
+    .command('end');
+
+program
+    .parse(process.argv);
