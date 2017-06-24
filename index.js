@@ -52,3 +52,22 @@ const endAsync = () => {
             }
         })
 }
+
+const listAsync = () => {
+    return new Promise((resolve, reject) => {
+        let tasks = [];
+        table.select({
+        }).eachPage((records, fetchNextPage) => {
+            records.forEach(function(record) {
+                tasks.push(record);
+            });
+            fetchNextPage();
+        }, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(tasks);
+            }
+        });
+    });
+}
