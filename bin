@@ -1,7 +1,8 @@
 #!/usr/bin/env node
- 
+
 const program = require('commander');
- 
+const timesheet = require('./timesheet');
+
 program
     .version('0.1.0')
     .command('list');
@@ -12,14 +13,24 @@ program
     .description('run the given remote command')
     .action((difficulty, mood, tokens) => {
         const description = tokens.join(' ');
-        console.log(difficulty);
-        console.log(mood);
-        console.log(description);
+        timesheet.endAsync()
+            .then(() => {
+                return timesheet.startAsync(difficulty, mood, description)
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     })
 
 program
     .version('0.1.0')
-    .command('end');
+    .command('end')
+    .action(() => {
+        timesheet.endAsync()
+            .catch((err) => {
+                console.error(err);
+            });
+    });
 
 program
     .parse(process.argv);
