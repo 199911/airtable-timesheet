@@ -6,11 +6,13 @@ const tag = require('./tag');
 
 program
     .version('0.1.0')
+    .alias('l')
     .command('list');
 
 program
     .version('0.1.0')
     .command('start <difficulty> <mood> [tokens...]')
+    .alias('s')
     .description('run the given remote command')
     .action((difficulty, mood, tokens) => {
         const description = tokens.join(' ');
@@ -27,6 +29,7 @@ program
 program
     .version('0.1.0')
     .command('end')
+    .alias('e')
     .action(() => {
         timesheet.endAsync()
             .catch((err) => {
