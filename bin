@@ -2,6 +2,7 @@
 
 const program = require('commander');
 const timesheet = require('./timesheet');
+const tag = require('./tag');
 
 program
     .version('0.1.0')
@@ -15,7 +16,8 @@ program
         const description = tokens.join(' ');
         timesheet.endAsync()
             .then(() => {
-                return timesheet.startAsync(difficulty, mood, description)
+                // Normalize the tag
+                return timesheet.startAsync(tag.normalize('Difficulty', difficulty), tag.normalize('Mood', mood), description);
             })
             .catch((err) => {
                 console.error(err);
