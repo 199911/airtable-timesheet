@@ -17,40 +17,8 @@ const startAsync = (difficulty, mood, description) => {
         Description: description,
         Difficulty: difficulty,
         Mood: mood,
-        Start: moment()
+        Time: moment()
     });
-}
-
-const endAsync = () => {
-    return new Promise((resolve, reject) => {
-        // Find record which have no end date
-        let prevTask = null;
-        // NOTE: Assume there is at most one matched record
-        table.select({
-            filterByFormula: '{End} = ""',
-            maxRecords: 1
-        }).eachPage((records, fetchNextPage) => {
-            records.forEach(function(record) {
-                prevTask = record;
-            });
-            fetchNextPage();
-        }, (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(prevTask);
-            }
-        });
-    })
-        .then((task) => {
-            if (task) {
-                return task.updateFields({
-                    'End': moment()
-                })
-            } else {
-                return null;
-            }
-        })
 }
 
 const listAsync = () => {
@@ -74,6 +42,5 @@ const listAsync = () => {
 
 module.exports = {
     startAsync,
-    endAsync,
     listAsync
 };

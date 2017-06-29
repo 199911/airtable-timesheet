@@ -16,26 +16,11 @@ program
     .description('run the given remote command')
     .action((difficulty, mood, tokens) => {
         const description = tokens.join(' ');
-        timesheet.endAsync()
-            .then(() => {
-                // Normalize the tag
-                return timesheet.startAsync(tag.normalize('Difficulty', difficulty), tag.normalize('Mood', mood), description);
-            })
+        timesheet.startAsync(tag.normalize('Difficulty', difficulty), tag.normalize('Mood', mood), description)
             .catch((err) => {
                 console.error(err);
             });
     })
-
-program
-    .version('0.1.0')
-    .command('end')
-    .alias('e')
-    .action(() => {
-        timesheet.endAsync()
-            .catch((err) => {
-                console.error(err);
-            });
-    });
 
 program
     .parse(process.argv);
