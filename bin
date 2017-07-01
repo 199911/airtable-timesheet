@@ -1,12 +1,28 @@
 #!/usr/bin/env node
 
 const program = require('commander');
+const moment = require('moment');
+require('moment-timezone');
 const timesheet = require('./timesheet');
 const tag = require('./tag');
 
 program
     .version('0.1.0')
     .alias('l')
+    .action(() => {
+        timesheet.listAsync()
+            .then((tasks) => {
+                console.log('Time, Mood, Difficulty, Description');
+                tasks.forEach((task) => {
+                    let { Time, Mood, Difficulty, Description } = task.fields
+                    Time = moment(Time).tz('Asia/Hong_Kong').format('hh:mm:ss');
+                    console.log(`${Time}, ${Mood}, ${Difficulty}, ${Description}`);
+                })
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    })
     .command('list');
 
 program
