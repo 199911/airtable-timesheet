@@ -27,12 +27,16 @@ program
 
 program
     .version('0.1.0')
-    .command('start <difficulty> <mood> [tokens...]')
+    .command('start <mood> <difficulty>  [tokens...]')
     .alias('s')
     .description('run the given remote command')
-    .action((difficulty, mood, tokens) => {
+    .action((mood, difficulty, tokens) => {
         const description = tokens.join(' ');
-        timesheet.startAsync(tag.normalize('Difficulty', difficulty), tag.normalize('Mood', mood), description)
+        timesheet.startAsync(
+                tag.normalize('Mood', mood),
+                tag.normalize('Difficulty', difficulty),
+                description
+            )
             .catch((err) => {
                 console.error(err);
             });

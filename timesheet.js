@@ -12,7 +12,7 @@ const base = Airtable.base(config.base);
 // base('24Jun');
 const table = Promise.promisifyAll(base(moment().format('DDMMM')));
 
-const startAsync = (difficulty, mood, description) => {
+const startAsync = (mood, difficulty, description) => {
     return table.createAsync({
         Description: description,
         Difficulty: difficulty,
