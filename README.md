@@ -18,4 +18,6 @@ A simple cli command to record task on airtable
 
 ## Todo
 
-1. Customized tag for difficulty and mood
+1. Customized tag for mood
+2. Use number to represent difficulty
+3. Sort the record by time is list command
