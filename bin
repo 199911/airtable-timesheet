@@ -34,12 +34,12 @@ program
     .action((mood, difficulty, tokens) => {
         const description = tokens.join(' ');
         timesheet.startAsync(
-                tag.normalize('Mood', mood),
+                tag.normalize(mood),
                 parseInt(difficulty, 10),
                 description
             )
             .then(() => {
-                console.log( moment().format('HH:mm') );
+                console.log( moment().format('Y-M-D HH:mm') );
             })
             .catch((err) => {
                 console.error(err);
