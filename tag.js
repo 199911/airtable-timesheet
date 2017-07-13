@@ -9,7 +9,8 @@ const normalize = (type, word) => {
             "...",
             "Fuck",
             "Angry",
-            "OK"
+            "OK",
+            "Nice"
         ];
     } else if (type == 'Difficulty'){
         tags = [
