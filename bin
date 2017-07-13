@@ -6,37 +6,41 @@ require('moment-timezone');
 const timesheet = require('./timesheet');
 const tag = require('./tag');
 
-program
-    .version('0.1.0')
-    .alias('l')
-    .action(() => {
-        timesheet.listAsync()
-            .then((tasks) => {
-                console.log('Time, Mood, Difficulty, Description');
-                tasks.forEach((task) => {
-                    let { Time, Mood, Difficulty, Description } = task.fields
-                    Time = moment(Time).tz('Asia/Hong_Kong').format('hh:mm:ss');
-                    console.log(`${Time}, ${Mood}, ${Difficulty}, ${Description}`);
-                })
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    })
-    .command('list');
+// program
+//     .version('0.1.0')
+//     .alias('l')
+//     .action(() => {
+//         timesheet.listAsync()
+//             .then((tasks) => {
+//                 console.log('Time, Mood, Difficulty, Description');
+//                 tasks.forEach((task) => {
+//                     let { Time, Mood, Difficulty, Description } = task.fields
+//                     Time = moment(Time).tz('Asia/Hong_Kong').format('hh:mm:ss');
+//                     console.log(`${Time}, ${Mood}, ${Difficulty}, ${Description}`);
+//                 })
+//             })
+//             .catch((err) => {
+//                 console.error(err);
+//             });
+//     })
+//     .command('list');
 
 program
     .version('0.1.0')
-    .command('start <mood> <difficulty>  [tokens...]')
-    .alias('s')
+    .arguments('<mood> <difficulty>  [tokens...]')
+    // .command('start <mood> <difficulty>  [tokens...]')
+    // .alias('s')
     .description('run the given remote command')
     .action((mood, difficulty, tokens) => {
         const description = tokens.join(' ');
         timesheet.startAsync(
                 tag.normalize('Mood', mood),
-                tag.normalize('Difficulty', difficulty),
+                parseInt(difficulty, 10),
                 description
             )
+            .then(() => {
+                console.log( moment().format('HH:mm') );
+            })
             .catch((err) => {
                 console.error(err);
             });
