@@ -28,18 +28,35 @@ const tag = require('./tag');
 program
     .version('0.1.0')
     .arguments('<mood> <difficulty>  [tokens...]')
-    // .command('start <mood> <difficulty>  [tokens...]')
-    // .alias('s')
     .description('run the given remote command')
     .action((mood, difficulty, tokens) => {
         const description = tokens.join(' ');
-        timesheet.startAsync(
-                tag.normalize(mood),
-                parseInt(difficulty, 10),
-                description
-            )
-            .then(() => {
-                console.log( moment().format('Y-M-D HH:mm') );
+        timesheet.listAsync()
+            .then((tasks) => {
+                // TODO: refactor to make the get previous task logic
+                //       functional.
+                let previousTask = null;
+                tasks.forEach((task) => {
+                    let { Time } = task.fields
+                    if (!previousTask) {
+                        previousTask = task;
+                    } else {
+                        // TODO: clean up the time logic with our own time format
+                        if (moment(Time) > moment(previousTask.fields.Time)) {
+                            previousTask = task;
+                        }
+                    }
+                });
+                return timesheet.startAsync(
+                    tag.normalize(mood),
+                    parseInt(difficulty, 10),
+                    description,
+                    previousTask.fields.Time
+                );
+            })
+            .then((res) => {
+                const { Time, Duration } = res.fields;
+                console.log( `Time: ${Time}\tDuration: ${Duration}` );
             })
             .catch((err) => {
                 console.error(err);
