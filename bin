@@ -6,25 +6,6 @@ require('moment-timezone');
 const timesheet = require('./timesheet');
 const tag = require('./tag');
 
-// program
-//     .version('0.1.0')
-//     .alias('l')
-//     .action(() => {
-//         timesheet.listAsync()
-//             .then((tasks) => {
-//                 console.log('Time, Mood, Difficulty, Description');
-//                 tasks.forEach((task) => {
-//                     let { Time, Mood, Difficulty, Description } = task.fields
-//                     Time = moment(Time).tz('Asia/Hong_Kong').format('hh:mm:ss');
-//                     console.log(`${Time}, ${Mood}, ${Difficulty}, ${Description}`);
-//                 })
-//             })
-//             .catch((err) => {
-//                 console.error(err);
-//             });
-//     })
-//     .command('list');
-
 program
     .version('0.1.0')
     .arguments('<mood> <difficulty>  [tokens...]')
@@ -47,6 +28,12 @@ program
                         }
                     }
                 });
+                // Set the duraction of previous task
+                if (previousTask) {
+                    const recordId = previousTask['_rawJson']['id'];
+                    const Duration = `${moment().diff(moment(previousTask.fields.Time), 'minute')} minutes`;
+                    previousTask.updateFields({Duration});
+                }
                 return timesheet.startAsync(
                     tag.normalize(mood),
                     parseInt(difficulty, 10),
