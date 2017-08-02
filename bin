@@ -51,7 +51,7 @@ program
                     tag.normalize(mood),
                     parseInt(difficulty, 10),
                     description,
-                    previousTask.fields.Time
+                    previousTask && previousTask.fields.Time
                 );
             })
             .then((res) => {

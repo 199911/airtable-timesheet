@@ -18,7 +18,7 @@ const startAsync = (mood, difficulty, description, startTime) => {
         Difficulty: difficulty,
         Mood: mood,
         Time: moment(),
-        Duration: `${moment().diff(moment(startTime), 'minute')} minutes`
+        Duration: startTime && `${moment().diff(moment(startTime), 'minute')} minutes`
     });
 }
 
