@@ -32,6 +32,7 @@ program
                 if (previousTask) {
                     const recordId = previousTask['_rawJson']['id'];
                     const Duration = `${moment().diff(moment(previousTask.fields.Time), 'minute')} minutes`;
+                    console.log( `Duration: ${Duration}` );
                     previousTask.updateFields({Duration});
                 }
                 return timesheet.startAsync(
@@ -42,8 +43,8 @@ program
                 );
             })
             .then((res) => {
-                const { Time, Duration } = res.fields;
-                console.log( `Time: ${Time}\tDuration: ${Duration}` );
+                const { Time } = res.fields;
+                console.log( `Time: ${Time}` );
             })
             .catch((err) => {
                 console.error(err);
